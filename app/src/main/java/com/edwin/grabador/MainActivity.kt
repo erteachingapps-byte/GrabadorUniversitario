@@ -39,15 +39,22 @@ class MainActivity : Activity() {
             textSize = 26f
         })
 
+        root.addView(TextView(this).apply {
+            text = "CLASES"
+            textSize = 18f
+            setPadding(0, 24, 0, 8)
+        })
+
         courses.forEach { course ->
-            root.addView(Button(this).apply {
-                text = course
-                setOnClickListener {
-                    subject = course
-                    Toast.makeText(context, "Seleccionada: $course", Toast.LENGTH_SHORT).show()
-                }
-            })
+            root.addView(subjectButton(course))
         }
+
+        root.addView(TextView(this).apply {
+            text = "REUNIONES"
+            textSize = 18f
+            setPadding(0, 28, 0, 8)
+        })
+        root.addView(subjectButton("Reuniones TAC"))
 
         root.addView(actionButton("● INICIAR GRABACIÓN", "START"))
         root.addView(actionButton("Ⅱ PAUSAR", "PAUSE"))
@@ -57,6 +64,15 @@ class MainActivity : Activity() {
 
         setContentView(ScrollView(this).apply { addView(root) })
     }
+
+    private fun subjectButton(name: String): Button =
+        Button(this).apply {
+            text = name
+            setOnClickListener {
+                subject = name
+                Toast.makeText(context, "Seleccionada: $name", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     private fun actionButton(label: String, action: String): Button =
         Button(this).apply {
