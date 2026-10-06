@@ -61,7 +61,7 @@ class MainActivity : Activity() {
         root.addView(section("REUNIONES"))
         root.addView(subjectButton("Reuniones TAC"))
 
-        root.addView(actionButton("● INICIAR GRABACIÓN","START"))
+        root.addView(Button(this).apply { text="📚 MIS GRABACIONES"; setOnClickListener { startActivity(Intent(this@MainActivity, RecordingsActivity::class.java)) } })\n        root.addView(actionButton("● INICIAR GRABACIÓN","START"))
         root.addView(actionButton("Ⅱ PAUSAR","PAUSE"))
         root.addView(actionButton("▶ REANUDAR","RESUME"))
         root.addView(actionButton("★ MARCAR MOMENTO","MARK"))
