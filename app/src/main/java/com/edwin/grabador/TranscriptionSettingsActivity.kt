@@ -8,7 +8,7 @@ import android.widget.*
 
 class TranscriptionSettingsActivity : Activity() {
  override fun onCreate(savedInstanceState: Bundle?) {
-  super.onCreate(savedInstanceState)
+  super.onCreate(savedInstanceState); UiTheme.apply(this)
   val prefs=getSharedPreferences("transcription_settings",MODE_PRIVATE)
   val root=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(28,28,28,100) }
   root.addView(TextView(this).apply { text="Preferencias de transcripción"; textSize=24f })
@@ -42,6 +42,6 @@ class TranscriptionSettingsActivity : Activity() {
    Toast.makeText(this@TranscriptionSettingsActivity,"Preferencias guardadas",Toast.LENGTH_SHORT).show()
   } })
   root.addView(TextView(this).apply { text="Configuración preparada. La transcripción local requiere instalar un motor y modelo; el procesamiento en línea requiere configurar un servicio. No se enviarán grabaciones automáticamente hasta completar esas etapas.";textSize=15f })
-  setContentView(ScrollView(this).apply { addView(root) })
+  setContentView(ScrollView(this).apply { setBackgroundColor(UiTheme.background(UiTheme.dark(this@TranscriptionSettingsActivity))); addView(root) })
  }
 }
