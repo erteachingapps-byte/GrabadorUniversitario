@@ -47,14 +47,17 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val root = LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(28,28,28,28) }
-        root.addView(TextView(this).apply { text="Mis Clases · Grabadora"; textSize=26f })
+        UiTheme.apply(this)
+        val dark = UiTheme.dark(this)
+        val root = LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(28,40,28,28); setBackgroundColor(UiTheme.background(dark)) }
+        root.addView(TextView(this).apply { text="Mis Clases · Grabadora"; textSize=26f; setTextColor(UiTheme.foreground(dark)) })
+        root.addView(Button(this).apply { text=if(dark) "☀ MODO CLARO" else "☾ MODO OSCURO"; setOnClickListener { getSharedPreferences("appearance",MODE_PRIVATE).edit().putBoolean("dark",!dark).apply(); recreate() } })
         selectedView=TextView(this).apply { text="Selecciona una clase o reunión"; textSize=18f; setPadding(0,12,0,12) }
-        root.addView(selectedView)
+        selectedView.setTextColor(UiTheme.foreground(dark)); root.addView(selectedView)
         statusView=TextView(this).apply { text="LISTO"; textSize=20f }
         timerView=TextView(this).apply { text="00:00:00"; textSize=36f }
         marksView=TextView(this).apply { text="★ Marcas: 0"; textSize=18f }
-        root.addView(statusView); root.addView(timerView); root.addView(marksView)
+        statusView.setTextColor(UiTheme.foreground(dark)); root.addView(statusView); timerView.setTextColor(UiTheme.foreground(dark)); root.addView(timerView); marksView.setTextColor(UiTheme.foreground(dark)); root.addView(marksView)
 
         root.addView(section("CLASES"))
         courses.forEach { root.addView(subjectButton(it)) }
@@ -76,9 +79,10 @@ class MainActivity : Activity() {
         })
     }
 
-    private fun section(t:String)=TextView(this).apply { text=t; textSize=18f; setPadding(0,24,0,8) }
+    private fun section(t:String)=TextView(this).apply { text=t; textSize=18f; setTextColor(UiTheme.foreground(UiTheme.dark(this@MainActivity))); setPadding(0,24,0,8) }
     private fun subjectButton(name:String)=Button(this).apply {
         text=name
+        UiTheme.style(this,UiTheme.color(name))
         setOnClickListener {
             if(recording){ Toast.makeText(context,"Finaliza la grabación antes de cambiar.",Toast.LENGTH_SHORT).show() }
             else { subject=name; selectedView.text=name }
