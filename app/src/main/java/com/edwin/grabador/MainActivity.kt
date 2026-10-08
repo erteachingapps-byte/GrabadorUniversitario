@@ -67,7 +67,7 @@ class MainActivity : Activity() {
         root.addView(actionButton("▶ REANUDAR","RESUME"))
         root.addView(actionButton("★ MARCAR MOMENTO","MARK"))
         root.addView(actionButton("■ FINALIZAR Y GUARDAR","STOP"))
-        setContentView(ScrollView(this).apply { addView(root) })
+        setContentView(ScrollView(this).apply {\n            clipToPadding = false\n            setPadding(0, 0, 0, (resources.displayMetrics.density * 96).toInt())\n            isFillViewport = true\n            addView(root)\n        })
     }
 
     private fun section(t:String)=TextView(this).apply { text=t; textSize=18f; setPadding(0,24,0,8) }
