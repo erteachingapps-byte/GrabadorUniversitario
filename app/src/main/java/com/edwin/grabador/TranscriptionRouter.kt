@@ -33,8 +33,8 @@ object TranscriptionRouter {
    "Hay conexión, pero todavía no existe un servicio gratuito configurado. No se enviará audio.")
   if(mode=="wifi") return Decision(Route.WAIT_FOR_WIFI,
    "Modo solo Wi-Fi: espera una conexión Wi-Fi con internet.")
-  val model=File(context.filesDir,"models/ggml-base.bin")
-  return if(model.isFile && model.length()>0L)
+  val model=WhisperModelManager.model(context)
+  return if(WhisperModelManager.installed(context))
    Decision(Route.LOCAL_MODEL_REQUIRED,
     "Modelo encontrado, pero el motor nativo Whisper aún no está instalado. Procesamiento pendiente.")
   else Decision(Route.LOCAL_MODEL_REQUIRED,
