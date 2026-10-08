@@ -6,6 +6,7 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.os.*
 import android.widget.*
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.Locale
@@ -93,6 +94,11 @@ class MainActivity : Activity() {
         layout.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
         layout.addView(controls, LinearLayout.LayoutParams(-1, -2))
         setContentView(layout)
+        layout.setOnApplyWindowInsetsListener { view, insets ->
+            view.setPadding(0, insets.systemWindowInsetTop, 0, insets.systemWindowInsetBottom)
+            insets
+        }
+        layout.requestApplyInsets()
     }
 
     private fun section(t:String)=TextView(this).apply { text=t; textSize=18f; setTextColor(UiTheme.foreground(UiTheme.dark(this@MainActivity))); setPadding(0,24,0,8) }
