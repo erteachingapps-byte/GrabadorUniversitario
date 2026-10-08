@@ -29,9 +29,8 @@ class MainActivity : Activity() {
     private val courses = listOf(
         "Lunes 1 · Fundamentos de la Didáctica",
         "Martes 1 · Uso y Manejo de la Voz",
-        "Martes 2 · Currículum Nacional",
         "Miércoles 1 · Atención a la Diversidad",
-        "Miércoles 2 · Currículum Nacional",
+        "Miércoles 2 · Bases Teóricas del Currículum Nacional",
         "Jueves 1 · Estrategia Psicopedagógica",
         "Viernes 1 · Comunicación y Tecnología Educativa"
     )
