@@ -67,6 +67,7 @@ class MainActivity : Activity() {
 
         root.addView(Button(this).apply { text="📚 MIS GRABACIONES"; setOnClickListener { startActivity(Intent(this@MainActivity, RecordingsActivity::class.java)) } })
         root.addView(Button(this).apply { text="⚙ PREFERENCIAS DE TRANSCRIPCIÓN"; setOnClickListener { startActivity(Intent(this@MainActivity, TranscriptionSettingsActivity::class.java)) } })
+        root.addView(Button(this).apply { text="💾 COPIA DE SEGURIDAD Y RESTAURACIÓN"; setOnClickListener { startActivity(Intent(this@MainActivity, BackupActivity::class.java)) } })
         val controls = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(20, 12, 20, 20)
