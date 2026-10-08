@@ -51,6 +51,9 @@ class TranscriptionSettingsActivity : Activity() {
   }
   root.addView(downloadButton)
   root.addView(TextView(this).apply { text="Configuración preparada. La transcripción local requiere instalar un motor y modelo; el procesamiento en línea requiere configurar un servicio. No se enviarán grabaciones automáticamente hasta completar esas etapas.";textSize=15f })
-  setContentView(ScrollView(this).apply { setBackgroundColor(UiTheme.background(UiTheme.dark(this@TranscriptionSettingsActivity))); addView(root) })
+  val scroll=ScrollView(this).apply { setBackgroundColor(UiTheme.background(UiTheme.dark(this@TranscriptionSettingsActivity))); addView(root) }
+  setContentView(scroll)
+  scroll.setOnApplyWindowInsetsListener { view, insets -> view.setPadding(0,insets.systemWindowInsetTop,0,insets.systemWindowInsetBottom);insets }
+  scroll.requestApplyInsets()
  }
 }
