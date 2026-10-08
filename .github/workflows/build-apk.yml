@@ -19,7 +19,17 @@ jobs:
           gradle-version: "8.9"
       - name: Obtener código abierto de Whisper
         run: git clone --depth 1 https://github.com/ggml-org/whisper.cpp.git app/src/main/cpp/whisper-src
-      - name: Compilar APK de prueba
+      - name: Preparar firma permanente
+        env:
+          GRABADOR_KEYSTORE_BASE64: ${{ secrets.GRABADOR_KEYSTORE_BASE64 }}
+          GRABADOR_SIGNING_PASSWORD: ${{ secrets.GRABADOR_SIGNING_PASSWORD }}
+        run: |
+          test -n "$GRABADOR_KEYSTORE_BASE64" || { echo "::error::Falta secreto GRABADOR_KEYSTORE_BASE64"; exit 1; }
+          test -n "$GRABADOR_SIGNING_PASSWORD" || { echo "::error::Falta secreto GRABADOR_SIGNING_PASSWORD"; exit 1; }
+          printf "%s" "$GRABADOR_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/grabador-signing.jks"
+          echo "GRABADOR_KEYSTORE_PATH=$RUNNER_TEMP/grabador-signing.jks" >> "$GITHUB_ENV"
+          echo "GRABADOR_SIGNING_PASSWORD=$GRABADOR_SIGNING_PASSWORD" >> "$GITHUB_ENV"
+      - name: Compilar APK con firma permanente
         run: gradle :app:assembleDebug --stacktrace
       - name: Verificar biblioteca nativa en APK
         run: |
