@@ -41,7 +41,7 @@ class TranscriptionSettingsActivity : Activity() {
    prefs.edit().putString("mode",chosen).putBoolean("mobile_online",mobile.isChecked).putBoolean("auto_summary",summary.isChecked).apply()
    Toast.makeText(this@TranscriptionSettingsActivity,"Preferencias guardadas",Toast.LENGTH_SHORT).show()
   } })
-  root.addView(TextView(this).apply { text="Configuración preparada. La transcripción local requiere instalar un motor y modelo; el procesamiento en línea requiere configurar un servicio. No se enviarán grabaciones automáticamente hasta completar esas etapas.";textSize=15f })
+  val modelState=TextView(this).apply { text=if(WhisperModelManager.installed(this@TranscriptionSettingsActivity)) "Modelo Whisper Base descargado" else "Modelo Whisper Base pendiente (aprox. 142 MB)"; textSize=16f }\n  root.addView(modelState)\n  val downloadButton=Button(this).apply { text="DESCARGAR MODELO WHISPER BASE POR WI-FI" }\n  downloadButton.setOnClickListener {\n   downloadButton.isEnabled=false\n   modelState.text="Preparando descarga..."\n   Thread { WhisperModelManager.download(applicationContext) { message -> runOnUiThread { modelState.text=message } };runOnUiThread { downloadButton.isEnabled=true } }.start()\n  }\n  root.addView(downloadButton)\n  root.addView(TextView(this).apply { text="Configuración preparada. La transcripción local requiere instalar un motor y modelo; el procesamiento en línea requiere configurar un servicio. No se enviarán grabaciones automáticamente hasta completar esas etapas.";textSize=15f })
   setContentView(ScrollView(this).apply { setBackgroundColor(UiTheme.background(UiTheme.dark(this@TranscriptionSettingsActivity))); addView(root) })
  }
 }
