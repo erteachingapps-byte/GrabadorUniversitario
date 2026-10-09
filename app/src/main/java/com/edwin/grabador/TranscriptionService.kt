@@ -16,7 +16,7 @@ class TranscriptionService : Service() {
   val intent=PendingIntent.getActivity(this,0,Intent(this,RecordingsActivity::class.java),PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
   return Notification.Builder(this,CHANNEL).setSmallIcon(android.R.drawable.ic_menu_edit).setContentTitle(title).setContentText(body).setContentIntent(intent).setOngoing(ongoing).build()
  }
- private fun update(body:String) { getSystemService(NotificationManager::class.java).notify(ID,notifyStatus("Whisper: transcribiendo",body,true)) }
+ private fun update(body:String,percent:Int?=null) { getSystemService(NotificationManager::class.java).notify(ID,Notification.Builder(this,CHANNEL).setSmallIcon(android.R.drawable.ic_menu_edit).setContentTitle("Whisper: transcribiendo").setContentText(body).setProgress(100,percent ?: 0,percent==null).setOngoing(true).setContentIntent(PendingIntent.getActivity(this,0,Intent(this,RecordingsActivity::class.java),PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)).build()) }
  override fun onStartCommand(intent:Intent?,flags:Int,startId:Int):Int {
   if(running) return START_NOT_STICKY
   val path=intent?.getStringExtra("session") ?: return START_NOT_STICKY
@@ -35,7 +35,10 @@ class TranscriptionService : Service() {
      val samples=AudioPcmDecoder.decode16kMono(audio)
      require(samples.size<=16000*180) { "Por ahora, máximo 3 minutos por segmento." }
      update("Procesando con Whisper ${index+1} de ${audios.size}")
-     val result=WhisperNative.transcribe(WhisperModelManager.model(this).absolutePath,samples)
+     val result=WhisperNative.transcribe(WhisperModelManager.model(this).absolutePath,samples,WhisperProgress { percent ->
+      val overall=((index*100+percent.coerceIn(0,100))/audios.size)
+      if(percent%5==0 || percent==100) update("Avance: $overall% · segmento ${index+1}/${audios.size}",overall)
+     })
      require(!result.startsWith("ERROR:")) { result }
      output.append("Segmento ${index+1}: ").append(audio.name).append("\n").append(result).append("\n")
     }
