@@ -2,7 +2,7 @@ plugins { id("com.android.application"); id("org.jetbrains.kotlin.android") }
 android {
  namespace = "com.edwin.grabador"
  compileSdk = 35
- defaultConfig { applicationId = "com.edwin.grabador"; minSdk = 26; targetSdk = 35; versionCode = 1; versionName = "0.1"; ndk { abiFilters += listOf("arm64-v8a") } }
+ defaultConfig { applicationId = "com.edwin.grabador"; minSdk = 26; targetSdk = 35; versionCode = 2; versionName = "0.2-online"; ndk { abiFilters += listOf("arm64-v8a") } }
  signingConfigs {
   create("permanent") {
    storeFile = file(System.getenv("GRABADOR_KEYSTORE_PATH") ?: "signing-placeholder.jks")
@@ -25,5 +25,6 @@ android {
 }
 
 dependencies {
+ testImplementation("junit:junit:4.13.2")
  implementation("androidx.core:core-ktx:1.15.0")
 }
