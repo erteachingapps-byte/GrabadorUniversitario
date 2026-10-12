@@ -1,7 +1,7 @@
 name: Compilar APK
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "codex/groq-online" ]
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,7 +30,7 @@ jobs:
           echo "GRABADOR_KEYSTORE_PATH=$RUNNER_TEMP/grabador-signing.jks" >> "$GITHUB_ENV"
           echo "GRABADOR_SIGNING_PASSWORD=$GRABADOR_SIGNING_PASSWORD" >> "$GITHUB_ENV"
       - name: Compilar APK con firma permanente
-        run: gradle :app:assembleDebug --stacktrace
+        run: gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace
       - name: Verificar biblioteca nativa en APK
         run: |
           unzip -l app/build/outputs/apk/debug/app-debug.apk | grep 'lib/arm64-v8a/libgrabador_whisper.so'
